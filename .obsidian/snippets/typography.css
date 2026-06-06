@@ -1,0 +1,93 @@
+/* ==========================================================================
+   Obsidian 排版样式   ——   by Claude
+   --------------------------------------------------------------------------
+   结构分三块，改哪个看注释就行：
+     ①  通用变量      → 阅读视图 + 编辑视图  都生效
+     ②  阅读视图专属  → 只在「阅读视图」(Cmd+E 切过去的那个) 生效
+     ③  编辑视图专属  → 只在「编辑 / 实时预览」生效
+   改完存盘，Obsidian 自动热重载，几秒生效。不想要就在「设置→外观→CSS片段」关掉。
+   ========================================================================== */
+
+
+/* ========== ① 通用变量（两个视图都生效） ==========
+   这些是 Obsidian 原生 CSS 变量，全局通用、不分视图，所以放一起。 */
+body {
+
+  /* 字体：英文/数字用 Claude 的 Anthropic Serif（随 Claude 桌面端安装；没装则自动回退到系统字体）。
+     想换无衬线把 "Anthropic Serif" 改成 "Anthropic Sans"；想用别的字体改这行即可。 */
+  --font-text: "Anthropic Serif", "PingFang SC", -apple-system, "Segoe UI", sans-serif;
+
+  --font-text-size: 18px;        /* 正文字号 */
+  --line-height-normal: 1.8;     /* 正文行距（标题行距在 ②③ 单独设） */
+  --p-spacing: 0em;              /* 正文段间距：0 = 段落之间不留额外空隙，只靠行距 */
+
+  /* 标题字号（h1 最大 → h6 最小） */
+  --h1-size: 1.7em;
+  --h2-size: 1.4em;
+  --h3-size: 1.2em;
+  --h4-size: 1.05em;
+  --h5-size: 1em;
+  --h6-size: 0.9em;
+}
+
+
+/* ========== ② 阅读视图专属（前缀 .markdown-rendered） ========== */
+
+/* 标题的段前 / 段后留白 */
+.markdown-rendered :is(h1, h2, h3, h4, h5, h6) {
+  margin-top: 1.8em !important;     /* 段前 */
+  margin-bottom: 0.3em !important;  /* 段后 */
+  line-height: 1.8 !important;      /* 标题自身行距（多行标题时的行间） */
+}
+
+/* 整篇第一个标题不必在顶部留那么大空 */
+.markdown-rendered :is(h1, h2):first-child {
+  margin-top: 1em !important;
+}
+
+/* 让「标题段前距」全库统一：把紧贴标题之前那个元素的段后距清零，
+   于是不管标题前面是正文还是另一个标题，段前都只剩上面那条的 1.2em。 */
+.markdown-rendered :is(p, ul, ol, blockquote, table, pre, .callout):has(+ :is(h1, h2, h3, h4, h5, h6)) {
+  margin-bottom: 0 !important;
+}
+
+/* callout（提示框 [!info]/[!note] 等）单独留气口：
+   因为正文段距 --p-spacing 设成了 0，callout 会和下方内容贴太紧，这里补回上下留白。
+   （紧贴标题之前的 callout 仍由上面那条规则压成 0，不受影响。） */
+.markdown-rendered .callout {
+  margin-block: 1em 1em !important;
+  /* —— 外观极简化：去掉刺眼的蓝色块，改成细左条 + 透明底 —— */
+  background: transparent !important;
+  border: 0 !important;
+  border-left: 2px solid var(--background-modifier-border) !important;
+  border-radius: 0 !important;
+  padding: 0.1em 0 0.1em 1em !important;
+  box-shadow: none !important;
+}
+/* 标题用正常字色（不要刺眼的蓝），图标 / 折叠箭头用淡灰 */
+.markdown-rendered .callout-title { color: var(--text-normal) !important; }
+.markdown-rendered .callout .callout-icon,
+.markdown-rendered .callout .callout-fold { color: var(--text-muted) !important; }
+
+/* callout 内部：标题与正文之间留出气口（正文段距为 0 时这里会贴太紧）。
+   想更松就把 margin-top 调大。 */
+.markdown-rendered .callout-title { margin-bottom: 0.5em !important; }
+.markdown-rendered .callout-content > :first-child { margin-top: 0 !important; }
+
+
+/* ========== ③ 编辑视图专属（前缀 .markdown-source-view.mod-cm6） ==========
+   编辑模式下你手敲的空行会实打实占一行，所以这里单独处理。 */
+
+/* 标题行的段前 / 段后留白 */
+.markdown-source-view.mod-cm6 .HyperMD-header {
+  margin-top: 1.2em !important;     /* 段前 */
+  margin-bottom: 0.8em !important;  /* 段后 */
+  line-height: 1.3 !important;
+}
+
+/* 缩小「空行」占的高度：保留空行，但不让它撑出大空白。
+   想更紧/更松改这里的 line-height。 */
+.markdown-source-view.mod-cm6 .cm-line:has(> br.cm-br:only-child),
+.markdown-source-view.mod-cm6 .cm-line:empty {
+  line-height: 0.6 !important;
+}
