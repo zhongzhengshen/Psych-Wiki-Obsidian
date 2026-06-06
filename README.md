@@ -2,7 +2,7 @@
 type: guide
 ---
 
-# LLM Wiki for Obsidian
+# Psych-Wiki-Obsidian
 
 > 一个基于 **Karpathy「LLM Wiki」理念**的 Obsidian 知识库模板：
 > **你往 `raw/` 丢原始资料，让 AI 提炼成 `wiki/` 里的结构化知识**——你负责判断，AI 负责记账。
