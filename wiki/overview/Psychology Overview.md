@@ -1,13 +1,14 @@
 ---
 type: overview
 domain: psychology
-summary: "自动汇总所有 domain: psychology 的页面，按类型分组"
-tags: [map, psychology]
-updated: 2026-06-05
+summary: "自动汇总所有 domain: psychology 的页面：concept 按 kind 分组，其余按 type 分组"
+tags:
+  - psychology
+updated: 2026-06-08
 ---
 
 > [!info] 本页说明
-> 本页会**自动汇总**所有 `domain: psychology` 的笔记，按类型（概念 / 来源 / 实体 …）分组成卡片。以后新增同领域笔记会自动出现，无需手动维护。
+> 本页会**自动汇总**所有 `domain: psychology` 的笔记：概念页按**种类**（理论 / 构念 / 测量工具 / 方法 / 概念）分组，再列来源、比较等。以后新增同领域笔记会自动出现，无需手动维护。
 
 > [!note]- 首次使用需打开以下设置（点击展开）
 > 1. **安装 Dataview 插件**：设置 → 第三方插件 → 浏览 → 搜 “Dataview” → 安装并启用。
@@ -41,12 +42,8 @@ const bar = prog.createDiv({ cls: "ov-bar" });
 bar.createDiv({ cls: "ov-bar-fill" }).style.width = pct + "%";
 prog.createDiv({ cls: "ov-progress-label", text: `核实进度 ${pct}%` });
 
-// ====== 卡片（按类型分组）======
-const TYPES = { concept: "概念", source: "来源", entity: "实体", comparison: "比较" };
-for (const t of Object.keys(TYPES)) {
-  const group = pages.where(p => p.type === t).sort(p => p.file.name);
-  if (group.length === 0) continue;
-  dv.header(3, `${TYPES[t]} (${group.length})`);
+// ====== 卡片渲染助手 ======
+const renderCards = (group) => {
   const grid = dv.container.createDiv({ cls: "ov-cards" });
   for (const p of group) {
     const card = grid.createDiv({ cls: "ov-card" });
@@ -58,6 +55,24 @@ for (const t of Object.keys(TYPES)) {
     const ok = String(p.status) === "verified";
     foot.createSpan({ cls: "ov-badge " + (ok ? "ok" : "warn"), text: ok ? "✓ 已核实" : "🕓 待核实" });
   }
-}
+};
+const section = (title, group) => {
+  if (group.length === 0) return;
+  dv.header(3, `${title} (${group.length})`);
+  renderCards(group.sort(p => p.file.name));
+};
+
+// ====== 概念页：按 kind 分组（研究骨架）======
+const KINDS = { theory: "理论", construct: "构念", measure: "测量工具", method: "方法", concept: "概念" };
+const concepts = pages.where(p => p.type === "concept");
+for (const k of Object.keys(KINDS)) section(KINDS[k], concepts.where(p => p.kind === k));
+// 没标 kind / kind 不在表中的概念页：兜底列出，提醒补标
+section("⚠️ 未分类（待补 kind）", concepts.where(p => !Object.keys(KINDS).includes(String(p.kind))));
+
+// ====== 其它类型 ======
+section("来源", pages.where(p => p.type === "source"));
+section("比较 / 跨域", pages.where(p => p.type === "comparison"));
+section("实体", pages.where(p => p.type === "entity"));
+
 if (total === 0) dv.paragraph("*（本领域暂无笔记，ingest 后会自动出现）*");
 ```

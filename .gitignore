@@ -1,31 +1,35 @@
-# ============ Obsidian 个人状态（不进仓库）============
+# Obsidian personal state
 .obsidian/workspace*.json
 .obsidian/app.json
 .obsidian/appearance.json
 .obsidian/core-plugins*.json
-.obsidian/community-plugins.json
 .obsidian/hotkeys.json
-.obsidian/graph.json
 .obsidian/plugins/
 .obsidian/themes/
 .trash/
 
-# ============ 附件 / 画板 ============
+# Local agent/plugin state
+.claude/
+.claudian/
+.codex/
+
+# Attachments and canvases
 Attachments/
 Excalidraw/
 
-# ============ 个人内容（安全网：模板只保留结构，不收录任何笔记）============
+# Template safety net: keep structure, not private or copyrighted content
 raw/papers/*
 raw/articles/*
 raw/notes/*
 raw/media/*
+Inbox/*
 wiki/sources/*
 wiki/concepts/*
 wiki/entities/*
 wiki/comparisons/*
-Inbox/*
-# 但保留占位文件，让空目录进得了仓库
+
+# Keep placeholder files for empty directories
 !**/.gitkeep
 
-# ============ 系统 ============
+# macOS
 .DS_Store

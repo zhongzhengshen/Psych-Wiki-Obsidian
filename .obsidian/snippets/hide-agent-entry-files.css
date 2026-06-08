@@ -1,0 +1,6 @@
+.nav-file:has(.nav-file-title[data-path="AGENTS.md"]),
+.nav-file:has(.nav-file-title[data-path="CLAUDE.md"]),
+.nav-file:has(.nav-file-title[data-path="sortspec.md"]),
+.nav-folder:has(.nav-folder-title[data-path="Attachments"]) {
+  display: none;
+}

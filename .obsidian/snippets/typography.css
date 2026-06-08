@@ -13,8 +13,8 @@
    这些是 Obsidian 原生 CSS 变量，全局通用、不分视图，所以放一起。 */
 body {
 
-  /* 字体：英文/数字用 Claude 的 Anthropic Serif（随 Claude 桌面端安装；没装则自动回退到系统字体）。
-     想换无衬线把 "Anthropic Serif" 改成 "Anthropic Sans"；想用别的字体改这行即可。 */
+  /* 字体：英文/数字用 Claude 的 Anthropic Serif；中文自动落到苹方。
+     想换成 Claude 的无衬线体，把 "Anthropic Serif" 改成 "Anthropic Sans"。 */
   --font-text: "Anthropic Serif", "PingFang SC", -apple-system, "Segoe UI", sans-serif;
 
   --font-text-size: 18px;        /* 正文字号 */

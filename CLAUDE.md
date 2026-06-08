@@ -1,12 +1,9 @@
-# 给 AI 维护者的入口（Claude Code 读这份）
+# AI 维护入口
 
-本知识库采用 Karpathy「LLM Wiki」模式：**人负责判断，AI 负责记账**。
+本库的唯一规则文件是：
 
-⚠️ **动手前必读**：本库的全部操作规则（目录约定、页面模板、Ingest/Query/Lint 流程、来源标注制度、按域策略）都在唯一权威文件里——
+👉 [[SCHEMA]]
 
-👉 **[[TheSchema]]**
+执行任何 Ingest / Query / Lint / 文件修改前，必须先完整阅读 `SCHEMA.md`，并按其中规则执行。
 
-每次执行 Ingest / Query / Lint 之前，先完整读一遍 `TheSchema.md`，严格照它执行。
-
-> 注：本文件与 `AGENTS.md` 内容相同，分别给 Claude Code 和 Codex/其它 agent 读。
-> 真正的规则永远只维护在 `TheSchema.md` 一处，不要把规则写进本文件。
+本文件只负责把 agent 引向 `SCHEMA.md`；不要在这里维护具体规则。

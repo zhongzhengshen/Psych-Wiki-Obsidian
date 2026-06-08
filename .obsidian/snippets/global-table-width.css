@@ -1,0 +1,22 @@
+/* Global table width adjustment for markdown notes */
+.markdown-preview-view .table-wrapper,
+.markdown-rendered .table-wrapper {
+  width: 100%;
+  max-width: 100%;
+  overflow-x: auto;
+}
+
+.markdown-preview-view table,
+.markdown-rendered table {
+  width: 100%;
+  max-width: 100%;
+  table-layout: auto;
+}
+
+.markdown-preview-view th,
+.markdown-preview-view td,
+.markdown-rendered th,
+.markdown-rendered td {
+  white-space: normal;
+  word-break: break-word;
+}
