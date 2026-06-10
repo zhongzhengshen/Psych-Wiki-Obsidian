@@ -33,3 +33,6 @@ wiki/comparisons/*
 
 # macOS
 .DS_Store
+
+# Personal folder-sort config (third-party plugin)
+sortspec.md
