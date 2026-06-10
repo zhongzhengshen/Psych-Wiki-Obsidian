@@ -102,7 +102,15 @@ Every destructive operation — batch renames, moves, deletions — must be list
 
 ### 1. Get the vault
 
-Clone this repository and open the folder in [Obsidian](https://obsidian.md).
+If you are familiar with Git, clone this repository from your terminal:
+
+```bash
+git clone https://github.com/zhongzhengshen/Psych-Wiki-Obsidian.git
+```
+
+If you do not use Git yet, open the GitHub project page, click **Code → Download ZIP**, and unzip the downloaded file.
+
+Finally, open [Obsidian](https://obsidian.md), choose "Open folder as vault", and select the folder you just cloned or unzipped.
 
 ### 2. Enable the overview dashboards (optional)
 
