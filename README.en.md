@@ -1,42 +1,51 @@
-# Psych-Wiki-Obsidian — An AI-Maintained Knowledge Base for Psychology Researchers
+# Psych-Wiki-Obsidian — A Knowledge-Base Framework for Psychology Researchers
+
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT) [![Obsidian](https://img.shields.io/badge/Obsidian-7C3AED?logo=obsidian&logoColor=white)](https://obsidian.md)
 
 [简体中文](README.md) | **English**
 
-> Drop papers into `raw/`, and an AI distills them into a growing knowledge network — **the AI does the bookkeeping; you do the judging.**
-
-This is an Obsidian knowledge-base framework built on [Karpathy's LLM Wiki idea](https://gist.github.com/karpathy/442a6bf555914893e9891c11519de94f), **designed specifically for psychology researchers**. It tackles three concrete pains: papers you read and forget, notes scattered everywhere, and AI summaries you don't quite dare to trust. A single rulebook written for AI ([SCHEMA.md](SCHEMA.md)) lets any agent (Claude Code / Codex / …) maintain your knowledge to the same standard — while the authority to *trust* anything stays firmly with you.
+> This is an Obsidian knowledge-base framework built on [Karpathy's LLM Wiki](https://gist.github.com/karpathy/442a6bf555914893e9891c11519de94f) idea, designed for psychology students and researchers.
+> It addresses these problems: papers read and then forgotten, notes scattered everywhere, knowledge that never connects into anything useful. The solution is a rulebook written for AI ([SCHEMA.md](SCHEMA.md)): whether the agent taking over is Claude Code, Codex, or some future agent, it maintains your knowledge to the same standard.
 
 ![Three-layer architecture and data flow](assets/fig-1-architecture.png)
 
-## ✨ Three Core Features
+## Design Philosophy
 
-1. **A psychology research backbone** — concepts aren't a flat pile; they're organized by the four research roles `theory / construct / method / measure`, mirroring how researchers actually think.
-2. **A dual-track trust model** — every AI-written page declares *what kind of source it came from* (`origin`) and *whether you have verified it* (`status`). AI-generated content can never masquerade as verified fact.
-3. **Traceability all the way down** — every claim can be walked back through wikilinks: concept page → source summary page → the original PDF in `raw/`.
+### The Single Rulebook
 
-## 🏛 Design Philosophy
+[SCHEMA.md](SCHEMA.md) is the vault's sole authoritative rulebook: how directories are organized, how pages are named, how frontmatter is filled in, and under what circumstances the AI must ask you first — all of it written down here as codified law. Any agent must read it in full before taking over. Swap the AI, keep the rules — the vault's consistency rests on this constitution, not on any particular tool.
 
-### Three layers
+### Three Principles
 
-| Layer | Responsibility | Written by |
-|---|---|---|
-| `raw/` | Archive of original materials, **append-only**, the single source of truth | You |
-| `wiki/` | The knowledge layer distilled from raw (source summaries, concepts, entities, comparisons, overviews) | AI |
-| `meta/` | Index and operation log — the catalog and timeline of the whole vault | AI |
+- **Traceable**: any piece of knowledge can be walked back to its origin along wikilinks: from concept page, to source summary page, and finally to the original material in `raw/`.
+- **Compounding**: new pages join the existing network through wikilinks, frontmatter, and the index; knowledge multiplies through citation instead of sleeping in folders.
+- **Growable**: a page may begin as a stub with a one-sentence definition and grow into a full page as new literature arrives. No page is required to be finished in one sitting, just as no idea is required to mature in one step.
 
-### Three principles
+### Three-Layer Directory Structure
 
-- **Traceable**: every important claim leads back to a source page, and ultimately to the original file in `raw/`.
-- **Compounding**: new pages join the network through wikilinks, frontmatter, and the index — the vault gets more valuable the more you use it.
-- **Growable**: a page may start as a one-sentence stub and grow into a full page as new sources arrive; nothing has to be written perfectly the first time.
+```
+raw/                  Original materials layer, in but never out — the single source of truth
+  papers/             Paper source packages (one folder per paper: PDF + fulltext MD + images)
+  articles/           Article source packages (web articles, blog posts, etc.)
+  notes/              Class notes / reading notes / ideas
+  media/              Standalone cross-source media
+wiki/                 Knowledge layer distilled from raw, maintained by AI
+  sources/            Source summary pages (one per source)
+  concepts/           Concept pages (subdivided by research_role)
+  entities/           Entity pages (people, books, projects)
+  comparisons/        Comparison & cross-domain pages
+  overview/           Auto-generated dashboards
+meta/                 Maintenance layer — the vault's catalog and timeline
+  index.md            Full catalog
+  log.md              Operation log
+Inbox/                To-be-processed materials (archived into raw/ after processing)
+SCHEMA.md             The AI's single rulebook
+CLAUDE.md / AGENTS.md Entry signposts for the respective agents
+```
 
-### A constitution
+## The Psychology Research Backbone
 
-[SCHEMA.md](SCHEMA.md) is the single authoritative rulebook: directory layout, page naming, frontmatter fields, and exactly when the AI must ask you first — all pinned down in one file. Any agent must read it in full before touching anything. Swap the AI, keep the rules: the vault's consistency depends on no particular tool.
-
-## 🔬 The Psychology Backbone
-
-This is what sets the vault apart from generic knowledge bases. Facing a paper, a psychology researcher naturally distinguishes four kinds of things — theories, constructs, methods, and measures. The vault bakes that distinction into its structure: every psychology concept page must carry a `research_role`:
+This is the deepest difference between this vault and a generic knowledge base. In a psychology researcher's eyes, a paper naturally decomposes into four kinds of components: theories, constructs, methods, and measures. The vault writes that distinction into the structure of knowledge itself: every psychology concept page must carry a `research_role`.
 
 ![The psychology knowledge backbone](assets/fig-2-psychology-backbone.png)
 
@@ -48,95 +57,77 @@ This is what sets the vault apart from generic knowledge bases. Facing a paper, 
 | `measure` | A specific test / instrument / scale | CRT-A, Buss-Perry Aggression Questionnaire |
 | `concept` | Fallback: phenomena / frameworks / methodological concepts | Faking, Measurement Equivalence |
 
-The four roles are connected into a queryable network. An example from this very vault:
+&nbsp;
 
-> **Conditional Reasoning Theory** (theory) claims that personality shapes unconscious justification mechanisms → those mechanisms make **Aggression** (construct) measurable → the concrete instrument is the **CRT-A** (measure) → which belongs to the **Conditional Reasoning Test** (method) hub, sharing development standards with its siblings CRT-P, CRT-RMS, and others.
+The four roles are linked into a queryable network. For example:
 
-What this backbone buys you in practice:
+> **Conditional Reasoning Theory** (theory) holds that personality and motives shape unconscious justification mechanisms; those mechanisms make **Aggression** (construct) measurable; the concrete instrument for that construct is the **CRT-A** (measure); and the CRT-A in turn belongs to the **Conditional Reasoning Test** (method), sharing one development process and set of standards with CRT-P, CRT-RMS, and other tests.
 
-- **Browse the way you think**: overview dashboards group pages by role automatically; "all instruments measuring aggression" or "every scale under the CRT method" is a single query.
-- **A minimum template per role**: construct pages must have *Definition / Measurement / Sources*; measure pages must have *Construct & Dimensions / Reliability & Validity / Sample Items*; theory pages must have *Core Claims*. Pages distilled from different papers stay structurally comparable.
-- **A safe fallback**: classification follows an explicit decision order, and anything genuinely ambiguous goes to `concept` — no over-inference for the sake of taxonomy.
+The payoff of this taxonomy is concrete:
 
-## 🔒 The Dual-Track Trust Model
+- **Browse the way research thinks.** Overview dashboards group pages by role automatically; "every instrument measuring a given `construct`," or which `measure`s sit under a given `method`, are questions a single query can exhaust.
+- **A minimum template for each role.** A construct page must have "definition, measurement, sources"; a measure page must have "construct & dimensions, reliability & validity, sample items"; a theory page must have "core claims." The AI fills pages out against these templates, so pages distilled from different papers share a comparable skeleton.
+- **When in doubt, fall back.** Classification follows an explicit decision order; anything undecidable goes to `concept` — better to stay conservative than to over-infer for taxonomy's sake.
 
-The biggest trap of AI-era knowledge management: everything the AI writes *looks* right. The vault manages "what kind of source" and "verified or not" as two orthogonal fields:
+## Double Insurance: Origin & Verification
 
-![The dual-track trust model](assets/fig-3-trust-matrix.png)
+The real danger of AI-era knowledge management is not that the AI makes mistakes — it's that the AI sounds exactly the same when it's wrong as when it's right. The vault's countermeasure is two orthogonal fields that record "what kind of source" and "verification status" separately:
+
+![The trust matrix](assets/fig-3-trust-matrix.png)
 
 | | `status: needs-review` | `status: verified` |
 |---|---|---|
-| **`origin: solid`** (real materials) | Freshly distilled from a paper, awaiting your eyes | Literature knowledge you have checked ✅ |
-| **`origin: ai-generated`** (AI synthesis) | AI synthesis or AI-assisted drafts — handle with most care | AI synthesis you endorsed (still labeled AI-generated) |
+| **`origin: solid`** | Knowledge the AI distilled from real materials, awaiting your eyes | Knowledge you have verified |
+| **`origin: ai-generated`** | AI-generated, or the product of your discussions with the AI — handle with most care | AI-generated but verified by you |
 
-Hard rules: every new AI-created page starts as `needs-review`; only you can promote it to `verified` after reading it yourself; and verification can never "launder" AI-generated content into real material — `verified` changes the review state, never the origin.
+&nbsp;
 
-## 🔁 Three Workflows
+Three iron rules: every page the AI creates starts as `needs-review`; only after you have read it with your own eyes may it become `verified`; and AI-generated content can never be "laundered" into first-hand material through verification — `verified` changes the review status, never the origin.
+
+## Workflows
 
 ![The three workflows](assets/fig-4-workflows.png)
 
 | Workflow | You say | The AI does |
 |---|---|---|
-| **Ingest** | "Ingest this PDF in `Inbox/`" | Reads the paper → confirms a page plan with you → archives the original into a `raw/` source package → writes a source summary → distills concept pages (auto-identifying theory/construct/method/measure nodes) → updates index and log |
-| **Query** | "Based on the vault, how strong is the anti-faking evidence for CRTs?" | Locates pages via the index → traces back to raw originals when needed → answers while distinguishing verified from unverified content → never writes back without asking |
-| **Lint** | "Run a health check on the vault" | Scans everything: frontmatter compliance, broken links, naming violations, missing template sections, orphan pages → produces a severity-graded report → fixes only after your confirmation |
+| **Ingest** | "Ingest this paper in `Inbox/`" | Reads the paper → confirms the proposed page list with you → archives the original into a `raw/` source package → writes a source summary page → distills concept pages → updates index and log |
+| **Query** | "Based on the vault, how faking-resistant are CRTs?" | Locates relevant pages via the index → traces back to raw originals when needed → distinguishes verified from unverified content in its answer → never writes back unasked |
+| **Lint** | "Run a lint / health check on the vault" | Scans the whole vault: frontmatter compliance, broken links, naming violations, missing template sections, orphan pages → produces a severity-graded report → fixes after your confirmation |
 
-Every destructive operation (batch renames, moves, deletions) requires a proposed list and your explicit confirmation first.
+&nbsp;
 
-## 🚀 Getting Started
+Every destructive operation — batch renames, moves, deletions — must be listed first and executed only after your confirmation.
+
+## Getting Started
 
 ### 1. Get the vault
 
-Clone this repository (or use it as a template) and open the folder in [Obsidian](https://obsidian.md).
+Clone this repository and open the folder in [Obsidian](https://obsidian.md).
 
-### 2. Enable the overview dashboards (optional but recommended)
+### 2. Enable the overview dashboards (optional)
 
-Overview pages use Dataview: install the **Dataview** plugin → enable **JavaScript queries** in its settings → enable the CSS snippet `.obsidian/snippets/overview-cards.css`.
+The overview pages depend on the **Dataview** plugin: in Settings — Community plugins, turn off Restricted mode and install Dataview from the marketplace, enable **JavaScript queries** in its settings, and enable the CSS snippet `.obsidian/snippets/overview-cards.css`.
 
-### 3. Connect an AI agent (either way works)
+### 3. Connect an AI Agent
 
-The vault is plain text — **any agent that can read/write the folder and follow SCHEMA will do**:
+The vault is mostly plain Markdown — **any agent that can read and write a folder and follow SCHEMA will do**:
 
-- **Option A · Inside Obsidian**: install the community plugin Claudian, point it at your Claude Code / Codex CLI, and chat from the sidebar panel.
-- **Option B · Terminal**: start Claude Code / Codex with this vault as the working directory; the root-level `CLAUDE.md` / `AGENTS.md` automatically routes the agent to SCHEMA.
+- **Option A · Inside Obsidian**: install the community plugin Claudian, fill in the CLI path of Claude Code / Codex etc., and chat with the agent in the sidebar panel.
+- **Option B · In a terminal / agent**: start Claude Code / Codex etc. with this vault as the working directory; the root-level `CLAUDE.md` / `AGENTS.md` automatically routes the agent to SCHEMA.
 
-### 4. The daily loop
+### 4. Daily Use
 
-1. **Collect**: found a good paper → drop it in `Inbox/`; your own notes → `raw/notes/`.
-2. **Distill**: tell the AI "ingest the Inbox". It proposes a page plan first and only acts after your nod.
-3. **Browse**: role-grouped dashboards in `wiki/overview/`; the Obsidian graph view for the knowledge network; `meta/index.md` for the full catalog.
+1. **Collect**: drop materials into `Inbox/`; if the type is already clear, file them directly under the matching folder in `raw/`.
+2. **Distill**: tell the AI "ingest this paper in Inbox/". It presents a list of pages to create or change, and acts only after your nod.
+3. **Browse**: read pages in `wiki/`, browse by research role in `wiki/overview/`, view the knowledge network in Obsidian's graph view, and query the full catalog in `meta/index.md`.
 
-## 📁 Repository Layout
+## Acknowledgements
 
-```
-raw/                  Original materials (read-only once archived)
-  papers/             Paper source packages (one folder per paper: PDF + fulltext MD + images)
-  articles/           Article source packages (web articles, blog posts, …)
-  notes/              Your own class notes / reading notes / ideas
-  media/              Standalone cross-source media
-wiki/                 Knowledge layer (AI-maintained)
-  sources/            Source summary pages (one per paper/article)
-  concepts/           Concept pages (subdivided by research_role)
-  entities/           Entity pages (people, books, projects)
-  comparisons/        Comparison & cross-domain pages
-  overview/           Auto-generated dashboards
-meta/                 Maintenance layer (AI-maintained)
-  index.md            Full catalog
-  log.md              Operation log (who changed what, when)
-Inbox/                To-be-processed materials (archived into raw/ after ingest)
-SCHEMA.md             ⭐ The single authoritative rulebook — the AI's "constitution"
-CLAUDE.md / AGENTS.md Entry signposts for the respective agents
-```
+- The structure and rulebook concept of this vault come from [Andrej Karpathy's LLM Wiki gist](https://gist.github.com/karpathy/442a6bf555914893e9891c11519de94f).
+- Thanks to [Claude Code](https://claude.com/claude-code) and [Codex](https://openai.com/codex): the rulebook was iterated with them, and the vault is maintained by them day to day — which is itself a validation of this vault's premise.
 
-## 🙏 Acknowledgements
-
-- The structural idea comes from [Andrej Karpathy's LLM Wiki gist](https://gist.github.com/karpathy/442a6bf555914893e9891c11519de94f).
-- Thanks to [Claude Code](https://claude.com/claude-code) and [Codex](https://openai.com/codex) — the rulebook's iteration and the vault's day-to-day maintenance are done by them.
-
-## 📄 License
+## License
 
 Released under the [MIT License](LICENSE).
 
 ---
-
-*The single source of truth for rules is [SCHEMA.md](SCHEMA.md); this file only explains things to humans.*
